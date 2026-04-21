@@ -2,6 +2,7 @@
 const express = require('express');
 const connectDB = require('./config/database')
 const Job = require('./models/Jobs')
+const jobRoutes = require('./routes/jobRoutes')
 const app = express()
 const dotenv = require('dotenv')
 dotenv.config()
@@ -42,6 +43,8 @@ app.get('/jobs', async(req,res) => {
         res.status(500).send("Internal Server Error");
     }
 })
+
+app.use('/api/jobs', jobRoutes);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })

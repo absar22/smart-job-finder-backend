@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+
 const jobSchema = new mongoose.Schema({
     title:{
         type:String,
@@ -22,6 +23,10 @@ const jobSchema = new mongoose.Schema({
     },
     skills:{
         type:[String],
+        required:true
+    },
+    link:{
+        type:String,
         required:true
     }
 })
