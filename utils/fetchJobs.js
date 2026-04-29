@@ -1,5 +1,4 @@
 const fetchJobs = async () => {
-    // Mock job data
   return [
     {
       title: "Software Engineer",
@@ -27,22 +26,42 @@ const fetchJobs = async () => {
       link: "job3",
       salary: 130000,
       description: "Lead product development and strategy."
-    },{
-        title: "UX Designer",
-        company: "Design Studio",
-        skills: ["Figma", "Prototyping"],
-        location: "Remote",
-        link: "job4",
-        salary: 110000,
-        description: "Design user-friendly interfaces."
-    },{
-        title: "Data Analyst",
-        company: "Analytics Co",
-        skills: ["SQL", "Data Visualization"],
-        location: "Remote",
-        link: "job5",
-        salary: 105000,
-        description: "Analyze and interpret complex data sets."
+    },
+    {
+      title: "UX Designer",
+      company: "Design Studio",
+      skills: ["Figma", "Prototyping"],
+      location: "Remote",
+      link: "job4",
+      salary: 110000,
+      description: "Design user-friendly interfaces."
+    },
+    {
+      title: "Data Analyst",
+      company: "Analytics Co",
+      skills: ["SQL", "Data Visualization"],
+      location: "Remote",
+      link: "job5",
+      salary: 105000,
+      description: "Analyze and interpret complex data sets."
+    },
+    {
+      title: "Machine Learning Engineer",
+      company: "AI Solutions",
+      skills: ["Python", "TensorFlow"],
+      location: "Remote",
+      link: "job6",
+      salary: 125000,
+      description: "Develop and implement machine learning models."
+    },
+    {
+      title: "DevOps Engineer",
+      company: "Cloud Corp",
+      skills: ["AWS", "Docker", "Kubernetes"],
+      location: "Austin",
+      link: "job7",
+      salary: 130000,
+      description: "Manage and optimize cloud infrastructure."
     }
   ];
 };
