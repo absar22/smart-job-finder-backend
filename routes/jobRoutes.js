@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const {fetchAndStoreJobs, getJobs, getJobsBySlug} = require('../controllers/jobController')
+const {fetchAndStoreJobs, getJobs, getJobsBySlug, getJobsPaginated} = require('../controllers/jobController')
 router.get('/fetch', fetchAndStoreJobs)
-router.get('/', getJobs)
+router.get('/', getJobsPaginated)
 router.get('/:slug', getJobsBySlug)
 module.exports = router
