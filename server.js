@@ -1,5 +1,6 @@
 
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/database')
 const Job = require('./models/Jobs')
 const jobRoutes = require('./routes/jobRoutes')
@@ -10,7 +11,10 @@ const PORT = process.env.PORT
 
 connectDB();
 
-
+app.use(cors({  
+    origin: 'http://localhost:3000',  
+    credentials: true  
+}));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

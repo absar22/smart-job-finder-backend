@@ -1,6 +1,34 @@
 const Jobs = require('../models/Jobs')
 const fetchJobs = require('../utils/fetchJobs')
 
+// Create
+const createJobs = async(req,res) => {
+    try{
+      const { title, company, location, salary, description, skills, link } = req.body
+    const slug = `${title}-${company}`.toLowerCase().replaceAll(',', '').replaceAll('.', '').split(' ').join('-')
+        const job = await Jobs.create({title,company,location,salary, description,skills,link,slug})
+        res.status(201).json({ job })
+    }catch(err){
+        console.error("Error creating job:", err)
+        res.status(500).send("Internal Server Error")
+    }
+}
+
+// Delete
+const deleteJob = async(req,res) => {
+    try{
+       const {id} = req.params
+       const job = await Jobs.findByIdAndDelete(id)
+       if(!job){
+           return res.status(404).send('Job not found')
+       }
+       res.status(200).send('Job deleted successfully')
+    }catch(err){
+        console.error("Error deleting job:", err)
+        res.status(500).send("Internal Server Error")
+    }
+}
+
 
 const fetchAndStoreJobs = async (req,res) => {
     try{
@@ -74,4 +102,4 @@ const getJobsPaginated = async (req,res) => {
 
 
 
-module.exports = {fetchAndStoreJobs, getJobs, getJobsBySlug, getJobsPaginated   }
+module.exports = {fetchAndStoreJobs, getJobs, getJobsBySlug, getJobsPaginated,createJobs,deleteJob }

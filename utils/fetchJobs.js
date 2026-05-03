@@ -62,6 +62,39 @@ const fetchJobs = async () => {
       link: "job7",
       salary: 130000,
       description: "Manage and optimize cloud infrastructure."
+    },
+    {
+      title: "Full Stack Developer",
+      company: "Web Solutions",
+      skills: ["JavaScript", "React", "Node.js", "CSS"],
+      location: "Remote",
+      link: "job8",
+      salary: 125000,
+      description: "Build and maintain web applications."
+    },{
+      title: "Backend Developer",
+      company: "API Solutions",
+      skills: ["Node.js", "Express", "MongoDB"],
+      location: "Remote",
+      link: "job9",
+      salary: 120000,
+      description: "Develop and maintain server-side applications."
+    },{
+      title: "QA Engineer",
+      company: "Testing Co",
+      skills: ["Selenium", "TestRail"],
+      location: "Remote",
+      link: "job10",
+      salary: 110000,
+      description: "Ensure the quality of software products."
+    },{
+      title: "Cloud Engineer",
+      company: "Cloud Solutions",
+      skills: ["AWS", "Azure", "Terraform"],
+      location: "Remote",
+      link: "job11",
+      salary: 125000,
+      description: "Design and manage cloud infrastructure."
     }
   ];
 };
