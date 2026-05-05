@@ -5,7 +5,10 @@ const fetchJobs = require('../utils/fetchJobs')
 const createJobs = async(req,res) => {
     try{
       const { title, company, location, salary, description, skills, link } = req.body
-    const slug = `${title}-${company}`.toLowerCase().replaceAll(',', '').replaceAll('.', '').split(' ').join('-')
+      if(!title || !company || !location || !salary || !description || !skills || !link){
+          return res.status(400).json({ message: "All fields are required" })
+      }
+      const slug = `${title}-${company}`.toLowerCase().replaceAll(',', '').replaceAll('.', '').split(' ').join('-')
         const job = await Jobs.create({title,company,location,salary, description,skills,link,slug})
         res.status(201).json({ job })
     }catch(err){
