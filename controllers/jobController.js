@@ -8,7 +8,16 @@ const createJobs = async(req,res) => {
       if(!title || !company || !location || !salary || !description || !skills || !link){
           return res.status(400).json({ message: "All fields are required" })
       }
-      const slug = `${title}-${company}`.toLowerCase().replaceAll(',', '').replaceAll('.', '').split(' ').join('-')
+      if(isNaN(salary)){
+          return res.status(400).json({ message: "Invalid salary format" })
+      }
+      if(!link.startsWith('http://') && !link.startsWith('https://')){
+          return res.status(400).json({ message: "Invalid job link format" })
+      }
+      if(!Array.isArray(skills) || skills.length === 0){
+          return res.status(400).json({ message: "Invalid skills format" })
+      }
+      const slug = `${title}-${company}-${Date.now()}`.toLowerCase().replaceAll(',', '').replaceAll('.', '').split(' ').join('-')
         const job = await Jobs.create({title,company,location,salary, description,skills,link,slug})
         res.status(201).json({ job })
     }catch(err){

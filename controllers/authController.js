@@ -9,6 +9,12 @@
         if(!name||!email||!password){
             return res.status(400).json({message:"All the fields are required!"})
         }
+        if(!email.includes('@')){
+            return res.status(400).json({message:"Invalid email format!"})
+        }
+        if(password.length< 8){
+            return res.status(400).json({message:"Password must be at least 8 characters long!"})
+        }
         const userExists = await User.findOne({email:email.toLowerCase()})
         if(userExists){
             return res.status(400).json({message:"User already exists!"})
