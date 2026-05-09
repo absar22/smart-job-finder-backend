@@ -1,4 +1,5 @@
-
+const dotenv = require('dotenv')
+dotenv.config()
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/database')
@@ -10,8 +11,7 @@ const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const logger = require('morgan')
 const app = express()
-const dotenv = require('dotenv')
-dotenv.config()
+
 const PORT = process.env.PORT
 
 connectDB();

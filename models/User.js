@@ -16,8 +16,12 @@ const userSchema = new mongoose.Schema({
         required:true,
         minlength:6,
         
+    },
+    profileImage:{
+        type:String,
+        default:""
     }
- 
+
 },{timestamps:true})
 
 module.exports = mongoose.model('User',userSchema)

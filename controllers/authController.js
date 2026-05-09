@@ -1,7 +1,7 @@
     const User = require('../models/User')
     const bcrypt = require('bcryptjs')
     const generateToken = require('../utils/generateToken')
-
+    const cloudinary = require('../config/cloudinary')
     // Create new user
     const createUser = async(req,res) => {
     try{
@@ -126,4 +126,19 @@
         }
     }
 
-    module.exports ={createUser, loginUser, getMe, logoutUser}
+    // Upload image
+    const uploadProfile = async(req,res)=>{
+        try{
+         const result = await cloudinary.uploader.upload(req.file.path) 
+         const user = await User.findByIdAndUpdate(req.user.id,{
+            profileImage: result.secure_url
+         },{new:true}).select('-password')    // this is user so that password is not in response
+         res.json(({user,message:"Profile image uploaded successfully!"}))
+
+        }catch(err){
+           console.log(err)
+           return res.status(400).json({message:"Bad request"})
+        }
+    }
+
+    module.exports ={createUser, loginUser, getMe, logoutUser,uploadProfile}
