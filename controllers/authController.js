@@ -99,8 +99,11 @@
             }
 
         return res.status(200).json({
-        _id:user._id,
-        email:user.email,
+         user: {
+           _id:user._id,
+           email:user.email,
+           name:user.name    
+         },
         message: 'User retrieved successfully' })
         }catch(err){
             console.log(err)
