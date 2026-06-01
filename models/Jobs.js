@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-const jobSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema(
+    {
     title:{
         type:String,
         required:true
@@ -29,14 +30,17 @@ const jobSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    createdAt:{
-        type:Date,
-        default:Date.now
+    slug: {
+        type: String,
+        unique: true,
+        lowercase: true,
+        trim: true,
+      },
+      
     },
-    slug:{
-        type:String,
-        unique:true
-    }
-})
+  {
+        timestamps: true
+      }
+    )
 
 module.exports = mongoose.model('Job', jobSchema)

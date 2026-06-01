@@ -14,12 +14,18 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        minlength:6,
+        minlength:8,
         
     },
     profileImage:{
         type:String,
         default:""
+    },
+    role:{
+        type:String,
+        enum:['user','admin'],
+        default:'user',
+        required:true,
     }
 
 },{timestamps:true})
