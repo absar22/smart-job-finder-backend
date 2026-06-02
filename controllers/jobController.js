@@ -95,17 +95,23 @@ const getJobsPaginated = async (req,res) => {
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit)|| 10
         const skip =(page - 1) * limit
-        const jobs = await Jobs.find().sort({createdAt:-1}).skip(skip).limit(limit)
-        const totalJobs = await Jobs.countDocuments()
+        const filter = {}
+        if(req.query.location){
+            filter.location = req.query.location
+        }if(req.query.company){
+            filter.company = req.query.company
+        }
+        if(req.query.skills){
+            filter.skills = req.query.skills
+        }
+        const jobs = await Jobs.find(filter).sort({createdAt:-1}).skip(skip).limit(limit)
+        const totalJobs = await Jobs.countDocuments(filter)
         res.status(200).json({
             jobs,
             totalJobs,
             totalPages: Math.ceil(totalJobs / limit),
             currentPage: page
         })
-
-
-
     }catch(error){
         console.error('Error fetching paginated jobs', error)
         res.status(500).send('Internal Server Error')
