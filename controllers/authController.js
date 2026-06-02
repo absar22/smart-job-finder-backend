@@ -31,8 +31,8 @@ const createUser = async(req,res) => {
         const token = generateToken(newUser._id)
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: 5 * 24 * 60 * 60 * 1000 // 5 days
         })
         
@@ -70,8 +70,8 @@ const loginUser = async(req,res) => {
         const token = generateToken(user._id)
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: 5 * 24 * 60 * 60 * 1000
         })
         
@@ -120,8 +120,8 @@ const logoutUser = async(req,res) => {
     try{
         res.clearCookie('token', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax'
+            secure: true,
+            sameSite: 'none'
         })
         res.status(200).json({message:'Logout successful'})
     }catch(err){
