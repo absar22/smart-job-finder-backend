@@ -97,7 +97,10 @@ const getJobsPaginated = async (req,res) => {
         const skip =(page - 1) * limit
         const filter = {}
         if(req.query.location){
-            filter.location = req.query.location
+            filter.location = {
+                $regex: req.query.location,
+                $options: 'i'
+            }
         }if(req.query.company){
             filter.company = req.query.company
         }
