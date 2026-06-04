@@ -11,15 +11,19 @@ const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const logger = require('morgan')
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 const app = express()
 
 const PORT = process.env.PORT
 
 connectDB();
 
-app.use(cors({  
-    origin: [process.env.CORS_ORIGIN, "http://localhost:3000"],  
-    credentials: true  
+
+
+app.use(cors({
+    origin: [process.env.CORS_ORIGIN, "http://localhost:3000"],
+    credentials: true
 }));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -37,6 +41,7 @@ app.use(logger('dev'));
 app.use('/api/jobs', jobRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));   // this is for later
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
     console.log(`API URL: http://localhost:${PORT}`)
