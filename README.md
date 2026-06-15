@@ -15,12 +15,12 @@ Backend API for Smart Job Finder built with Node.js, Express, MongoDB, and Cloud
 * Job CRUD APIs
 * Pagination support
 * Dynamic slug generation
-*Bookmark (save/unsave) jobs
-*Application tracking system
-*Filter jobs by location
-*Populate related job data
-*Express security middleware
-*Rate limiting
+* Bookmark (save/unsave) jobs
+* Application tracking system
+* Filter jobs by location
+* Populate related job data
+* Express security middleware
+* Rate limiting
 ---
 
 ## Tech Stack
@@ -92,7 +92,20 @@ POST /api/jobs
 PUT /api/jobs/:id
 DELETE /api/jobs/:id
 ```
+### Saved Jobs / Bookmarks
 
+```http
+
+POST /api/saved-jobs
+GET /api/saved-jobs
+DELETE /api/saved-jobs/:jobId
+```
+
+### Applications
+
+```http
+POST /api/applications
+GET /api/applications
 ---
 
 ## Security Features
