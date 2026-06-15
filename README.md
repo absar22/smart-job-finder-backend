@@ -133,10 +133,4 @@ GET /api/applications
 * Add password reset flow
 * Add email verification
 * Fix pagination URL bug
-* Add toast notifications
-* Add loading skeletons
-* Use Next.js Image
-* Add error boundaries
-* Fix bookmarked jobs empty state
-* Improve dashboard design
-* Mobile hamburger menu
+
