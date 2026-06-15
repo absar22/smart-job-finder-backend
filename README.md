@@ -108,6 +108,9 @@ POST /api/applications
 GET /api/applications
 ---
 
+
+```
+
 ## Security Features
 
 * HTTP-only cookies
@@ -125,3 +128,15 @@ GET /api/applications
 * Applied jobs tracking
 * Admin dashboard
 * Notifications
+* Fix Apply button
+* Add keyword/title search
+* Add password reset flow
+* Add email verification
+* Fix pagination URL bug
+* Add toast notifications
+* Add loading skeletons
+* Use Next.js Image
+* Add error boundaries
+* Fix bookmarked jobs empty state
+* Improve dashboard design
+* Mobile hamburger menu
