@@ -8,16 +8,19 @@ Backend API for Smart Job Finder built with Node.js, Express, MongoDB, and Cloud
 
 ## Features
 
-* User authentication
-* JWT cookie authentication
+* User authentication and authorization
+* JWT authentication with HTTP-only cookies
 * Protected routes
 * Profile image upload with Cloudinary
 * Job CRUD APIs
 * Pagination support
-* Dynamic slug support
-* Express security middleware
-* Rate limiting
-
+* Dynamic slug generation
+*Bookmark (save/unsave) jobs
+*Application tracking system
+*Filter jobs by location
+*Populate related job data
+*Express security middleware
+*Rate limiting
 ---
 
 ## Tech Stack
