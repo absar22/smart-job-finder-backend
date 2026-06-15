@@ -2,7 +2,7 @@
 const SavedJobs = require('../models/SavedJobs')
 const Jobs = require('../models/Jobs')
 
-const saveJob = async(req,res) => {
+const saveJob = async(req,res,next) => {
     console.log(req.user)
     const {jobId} = req.body
     try{
@@ -29,12 +29,11 @@ const saveJob = async(req,res) => {
      
      res.status(201).json({message:"job saved successfully"})
     }catch(err){
-       console.error(err)
-       res.status(500).json({message:"internal server error"})
+       next(err)
     }
 }
 
-const removeSavedJob = async(req,res) => {
+const removeSavedJob = async(req,res,next) => {
     const {jobId} = req.body
     try{
         const savedJob = await SavedJobs.findOneAndDelete({
@@ -47,12 +46,11 @@ const removeSavedJob = async(req,res) => {
         
         return res.status(200).json({message:"saved job removed successfully"})
     }catch(err){
-        console.log(err)
-        return res.status(500).json({message:"internal server error"})
+        next(err)
     }
 }
 
-const getSavedJob = async(req,res) => {
+const getSavedJob = async(req,res,next) => {
     try{
        const getJobs = await SavedJobs.find({
         user:req.user.id
@@ -60,8 +58,7 @@ const getSavedJob = async(req,res) => {
        }).populate('job').sort({createdAt:-1})
        return res.status(200).json(getJobs)
     }catch(err){
-        console.log(err)
-        return res.status(500).json({message:"internal server error"})
+        next(err)
     }
 }
 

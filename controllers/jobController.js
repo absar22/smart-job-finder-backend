@@ -2,7 +2,7 @@ const Jobs = require('../models/Jobs')
 const fetchJobs = require('../utils/fetchJobs')
 
 // Create
-const createJobs = async(req,res) => {
+const createJobs = async(req,res,next) => {
     try{
       const { title, company, location, salary, description, skills, link } = req.body
       if(!title || !company || !location || !salary || !description || !skills || !link){
@@ -21,13 +21,12 @@ const createJobs = async(req,res) => {
         const job = await Jobs.create({title,company,location,salary, description,skills,link,slug})
         res.status(201).json({ job })
     }catch(err){
-        console.error("Error creating job:", err)
-        res.status(500).send("Internal Server Error")
+        next(err)
     }
 }
 
 // Delete
-const deleteJob = async(req,res) => {
+const deleteJob = async(req,res,next) => {
     try{
        const {id} = req.params
        const job = await Jobs.findByIdAndDelete(id)
@@ -36,13 +35,12 @@ const deleteJob = async(req,res) => {
        }
        res.status(200).send('Job deleted successfully')
     }catch(err){
-        console.error("Error deleting job:", err)
-        res.status(500).send("Internal Server Error")
+        next(err)
     }
 }
 
 
-const fetchAndStoreJobs = async (req,res) => {
+const fetchAndStoreJobs = async (req,res,next) => {
     try{
         const jobs = await fetchJobs()
         let newJobsCount = 0
@@ -57,25 +55,23 @@ const fetchAndStoreJobs = async (req,res) => {
        
         }
         res.json({ message: "Fetch completed", newJobsCount })
-    }catch(error){
-        console.error("Error storing jobs:", error);
-        res.status(500).send("Internal Server Error");
+    }catch(err){
+        next(err)
     }
 }
 
-const getJobs = async (req,res) => {
+const getJobs = async (req,res,next) => {
     try{
         const jobs = await Jobs.find().sort({createdAt: -1})  
         res.status(200).json({
             jobs,
         })
-    }catch(error){
-        console.error("Error fetching jobs:", error);
-        res.status(500).send("Internal Server Error");
+    }catch(err){
+        next(err)
     }
 }
 
-const getJobsBySlug = async (req,res) => {
+const getJobsBySlug = async (req,res,next) => {
     try{
         const {slug} = req.params
         const job = await Jobs.findOne({slug})
@@ -84,13 +80,12 @@ const getJobsBySlug = async (req,res) => {
             }
         res.status(200).json({job})
     }catch(error){
-        console.error("Error fetching job by slug:", error);
-        res.status(500).send("Internal Server Error");
+        next(err)
     }
 }
 // Pagination
 
-const getJobsPaginated = async (req,res) => {
+const getJobsPaginated = async (req,res,next) => {
     try{
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit)|| 10
@@ -116,8 +111,7 @@ const getJobsPaginated = async (req,res) => {
             currentPage: page
         })
     }catch(error){
-        console.error('Error fetching paginated jobs', error)
-        res.status(500).send('Internal Server Error')
+        next(err)
     }
 }
 

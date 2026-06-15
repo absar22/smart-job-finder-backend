@@ -4,7 +4,7 @@ const generateToken = require('../utils/generateToken')
 const cloudinary = require('../config/cloudinary')
 
 // Create new user
-const createUser = async(req,res) => {
+const createUser = async(req,res,next) => {
     try{
         const {name, email, password} = req.body
         if(!name || !email || !password){
@@ -46,13 +46,12 @@ const createUser = async(req,res) => {
             message: "User created successfully!"
         })
     }catch(err){
-        console.log(err)
-        return res.status(500).json({message:"Internal server error"})
+        next(err)
     }
 }
 
 // Login user
-const loginUser = async(req,res) => {
+const loginUser = async(req,res,next) => {
     try{
         const {email, password} = req.body
         if(!email || !password){
@@ -85,13 +84,12 @@ const loginUser = async(req,res) => {
             message: "Login successful!"
         })
     }catch(err){
-        console.log(err)
-        return res.status(500).json({message:"Internal server error"})
+        next(err)
     }
 }
 
 // Get current user /me
-const getMe = async (req,res) => {
+const getMe = async (req,res,next) => {
     try{
         const user = await User.findById(req.user.id).select('-password')
         
@@ -110,13 +108,12 @@ const getMe = async (req,res) => {
             message: 'User retrieved successfully'
         })
     }catch(err){
-        console.log(err)
-        return res.status(500).json({message:"Internal server error"})
+      next(err)
     }
 }
 
 // Logout
-const logoutUser = async(req,res) => {
+const logoutUser = async(req,res,next) => {
     try{
         res.clearCookie('token', {
             httpOnly: true,
@@ -125,13 +122,12 @@ const logoutUser = async(req,res) => {
         })
         res.status(200).json({message:'Logout successful'})
     }catch(err){
-        console.log(err)
-        return res.status(500).json({message:"Internal server error"})
+        next(err)
     }
 }
 
 // Upload image 
-const uploadProfile = async(req,res) => {
+const uploadProfile = async(req,res,next) => {
     try{
         if(!req.file) {
             return res.status(400).json({message:"No file uploaded"})
@@ -156,8 +152,7 @@ const uploadProfile = async(req,res) => {
             message: "Profile image uploaded successfully!"
         })
     }catch(err){
-        console.log(err)
-        return res.status(400).json({message:"Bad request", error: err.message})
+        next(err)
     }
 }
 
