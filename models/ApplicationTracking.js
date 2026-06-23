@@ -19,6 +19,8 @@ const ApplicationTrackingSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     }
+},{
+    timestamps:true
 })
 ApplicationTrackingSchema.index({
     user:1,
