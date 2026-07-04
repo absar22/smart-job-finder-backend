@@ -106,6 +106,8 @@ DELETE /api/saved-jobs/:jobId
 ```http
 POST /api/applications
 GET /api/applications
+PATCH /api/applications/:id
+DELETE /api/applications/:id
 ---
 
 

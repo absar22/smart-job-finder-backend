@@ -15,7 +15,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 const errorHandler = require('./middleware/errorHandler')
 const applicationRoutes = require('./routes/applicationRoutes')
-
+const client = require('./config/redis')
 const app = express()
 
 const PORT = process.env.PORT
@@ -38,13 +38,24 @@ app.use(rateLimit({
     message: 'Too many requests, please try again later.'
 }));
 app.use(logger('dev'));
-
-
+async function startRedisServer(){
+ try{
+   await client.connect()
+   console.log('Connected to Redis');
+ }catch(err){
+  console.log('Error connecting to Redis:', err);
+ }
+}
+startRedisServer();
 // Routes
 app.use('/api/jobs', jobRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.get('/redis-test', async(req,res) => {
+
+// test done inplementation will be done later
+})
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));   // this is for later
 // 404 Catch-All
@@ -54,6 +65,7 @@ app.use((req, res) => {
     message: 'Route not found'
   });
 });
+
 
 app.use(errorHandler);
 app.listen(PORT, () => {
