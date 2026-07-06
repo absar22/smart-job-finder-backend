@@ -2,7 +2,8 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const generateToken = require('../utils/generateToken')
 const cloudinary = require('../config/cloudinary')
-
+const { sendPasswordResetEmail } = require('../services/email.service')
+const crypto = require('crypto')
 // Create new user
 const createUser = async(req,res,next) => {
     try{
@@ -156,4 +157,102 @@ const uploadProfile = async(req,res,next) => {
     }
 }
 
-module.exports = {createUser, loginUser, getMe, logoutUser, uploadProfile}
+const createForgotPassword = async(req,res,next)=>{
+    let user 
+    try{
+        if(!req.body.email){
+            return res.status(400).json({message:"Email is required"})
+        }
+        user = await User.findOne({email:req.body.email.toLowerCase()})
+
+        if(!user){
+            return res.status(404).json({message:"User not found"})
+        }
+ 
+        const resetToken = user.createPasswordResetToken()
+        const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+        console.log("Reset URL:", resetURL);
+        await user.save({validateBeforeSave:false})
+        
+        await sendPasswordResetEmail({
+            email: user.email,
+            resetURL,
+            subject: "Reset your password",
+            message: `Click the link below to reset your password:${resetURL}This link expires in 10 minutes.`
+        })
+
+        res.status(200).json({
+            message: "If an account with that email exists, we've sent a password reset link."
+        })
+    }catch(err){
+     
+        if (user) {
+            try {
+                user.passwordResetToken = undefined
+                user.passwordResetExpires = undefined
+                await user.save({validateBeforeSave:false})
+            } catch (cleanupErr) {
+                console.error('Cleanup failed:', cleanupErr)
+            }
+        }
+        next(err)
+    }
+}
+
+const resetPassword = async (req,res,next) => {
+    try{
+        const { token } = req.params
+        const { password, confirmPassword } = req.body
+        
+      
+        if(!token){
+            return res.status(400).json({message:"Reset token is required"})
+        }
+        if(!password || !confirmPassword){
+            return res.status(400).json({message:"Please provide both password and confirm password"})
+        }
+        if(password !== confirmPassword){
+            return res.status(400).json({message:"Passwords do not match"})
+        }
+        if(password.length < 8){ 
+            return res.status(400).json({message:"Password must be at least 8 characters long"})
+        }
+        
+        // Hash the token to compare with stored hash
+        const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
+        
+        const user = await User.findOne({
+            passwordResetToken: hashedToken,
+            passwordResetExpires: { $gt: Date.now() }
+        })
+        
+        if(!user){
+            return res.status(400).json({message:"Token is invalid or has expired"})
+        }
+        
+        // Hash password manually (if no pre-save hook)
+        const hashedPassword = await bcrypt.hash(password, 10)
+        user.password = hashedPassword
+        
+        //  Option 2: If you have pre-save hook, just set and let hook handle it
+        // user.password = password // Only if you have pre('save') hook
+        
+        user.passwordResetToken = undefined
+        user.passwordResetExpires = undefined
+        user.passwordChangedAt = Date.now() //  Track when password was changed
+        
+        await user.save()
+        
+        //  Optional: Clear any existing sessions/tokens
+        await clearUserSessions(user._id)
+        
+        res.status(200).json({
+            message: "Password reset successful! You can now log in with your new password."
+        })
+    }catch(err){
+        next(err)
+    }
+}
+
+
+module.exports = {createUser, loginUser, getMe, logoutUser, uploadProfile, createForgotPassword, resetPassword}

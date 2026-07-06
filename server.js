@@ -38,15 +38,15 @@ app.use(rateLimit({
     message: 'Too many requests, please try again later.'
 }));
 app.use(logger('dev'));
-async function startRedisServer(){
- try{
-   await client.connect()
-   console.log('Connected to Redis');
- }catch(err){
-  console.log('Error connecting to Redis:', err);
- }
-}
-startRedisServer();
+// async function startRedisServer(){
+//  try{
+//    await client.connect()
+//    console.log('Connected to Redis');
+//  }catch(err){
+//   console.log('Error connecting to Redis:', err);
+//  }
+// }
+// startRedisServer();
 // Routes
 app.use('/api/jobs', jobRoutes);
 app.use('/api/auth', authRoutes);
