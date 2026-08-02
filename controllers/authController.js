@@ -220,6 +220,14 @@ const resetPassword = async (req,res,next) => {
         
         // Hash the token to compare with stored hash
         const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
+        console.log("Token from URL:", token);
+console.log("Hashed token:", hashedToken);
+
+const userWithoutExpiry = await User.findOne({
+  passwordResetToken: hashedToken,
+});
+
+console.log("User found without expiry:", userWithoutExpiry);
         
         const user = await User.findOne({
             passwordResetToken: hashedToken,
