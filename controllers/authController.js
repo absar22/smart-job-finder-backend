@@ -174,27 +174,22 @@ const createForgotPassword = async(req,res,next)=>{
         console.log("Reset URL:", resetURL);
         await user.save({validateBeforeSave:false})
         
-        await sendPasswordResetEmail({
-            email: user.email,
-            resetURL,
-            subject: "Reset your password",
-            message: `Click the link below to reset your password:${resetURL}This link expires in 10 minutes.`
-        })
+        try {
+            await sendPasswordResetEmail({
+                email: user.email,
+                resetURL,
+                subject: "Reset your password",
+                message: `Click the link below to reset your password:${resetURL}This link expires in 10 minutes.`
+            })
+        } catch (emailErr) {
+            console.error('Email sending failed:', emailErr);
+            console.log('Use the Reset URL logged above to test the reset flow locally.');
+        }
 
         res.status(200).json({
             message: "If an account with that email exists, we've sent a password reset link."
         })
     }catch(err){
-     
-        if (user) {
-            try {
-                user.passwordResetToken = undefined
-                user.passwordResetExpires = undefined
-                await user.save({validateBeforeSave:false})
-            } catch (cleanupErr) {
-                console.error('Cleanup failed:', cleanupErr)
-            }
-        }
         next(err)
     }
 }
@@ -252,7 +247,7 @@ console.log("User found without expiry:", userWithoutExpiry);
         await user.save()
         
         //  Optional: Clear any existing sessions/tokens
-        await clearUserSessions(user._id)
+        // await clearUserSessions(user._id)
         
         res.status(200).json({
             message: "Password reset successful! You can now log in with your new password."

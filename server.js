@@ -25,17 +25,17 @@ connectDB();
 
 
 app.use(cors({
-    origin: [process.env.CORS_ORIGIN, "http://localhost:3000"],
-    credentials: true
+  origin: [process.env.CORS_ORIGIN, "http://localhost:3000"],
+  credentials: true
 }));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(helmet())
 app.use(rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    message: 'Too many requests, please try again later.'
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests, please try again later.'
 }));
 app.use(logger('dev'));
 // async function startRedisServer(){
@@ -52,9 +52,9 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/applications', applicationRoutes);
-app.get('/redis-test', async(req,res) => {
+app.get('/redis-test', async (req, res) => {
 
-// test done inplementation will be done later
+  // test done inplementation will be done later
 })
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));   // this is for later
@@ -69,6 +69,6 @@ app.use((req, res) => {
 
 app.use(errorHandler);
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-    console.log(`API URL: http://localhost:${PORT}`)
+  console.log(`Server is running on port ${PORT}`)
+  console.log(`API URL: http://localhost:${PORT}`)
 })
